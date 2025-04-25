@@ -10,11 +10,44 @@
 <body>
     <div class="container">
         <h1>Мої нотатки</h1>
+        <a href="{% url 'create_note' %}" class="btn btn-primary">Створити нотатку</a>
+
+        <!-- Фільтри та пошук -->
+        <div class="filters">
+            <form method="get" class="filter-form">
+                <div class="filter-group">
+                    <label for="category">Категорія:</label>
+                    <select name="category" id="category" onchange="this.form.submit()">
+                        <option value="">Усі</option>
+                        <option value="none" {% if category_filter == 'none' %}selected{% endif %}>Без категорії</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if category_filter == category.id|stringformat:"s" %}selected{% endif %}>{{ category.title }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="reminder">Нагадування:</label>
+                    <select name="reminder" id="reminder" onchange="this.form.submit()">
+                        <option value="" {% if not reminder_filter %}selected{% endif %}>Усі</option>
+                        <option value="today" {% if reminder_filter == 'today' %}selected{% endif %}>Сьогодні</option>
+                        <option value="future" {% if reminder_filter == 'future' %}selected{% endif %}>Майбутні</option>
+                        <option value="no_reminder" {% if reminder_filter == 'no_reminder' %}selected{% endif %}>Без нагадувань</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="search">Пошук:</label>
+                    <input type="text" name="search" id="search" value="{{ search_query }}" placeholder="Пошук за заголовком">
+                    <button type="submit" class="btn btn-secondary">Шукати</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Список нотаток -->
         <div class="notes-grid">
             {% for note in notes %}
                 <div class="note-card">
-                    <h2>{{ note.title }}</h2>
-                    <p>{{ note.text }}</p>
+                    <h2><a href="{% url 'note_detail' note.id %}">{{ note.title }}</a></h2>
+                    <p>{{ note.text|truncatewords:30 }}</p>
                     {% if note.category %}
                         <p><strong>Категорія:</strong> {{ note.category.title }}</p>
                     {% else %}

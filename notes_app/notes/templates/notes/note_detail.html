@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деталі нотатки</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notes/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Редагувати нотатку</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Зберегти</button>
+            <a href="{% url 'index' %}" class="btn btn-secondary">Скасувати</a>
+            <button type="submit" name="delete" class="btn btn-danger">Видалити</button>
+        </form>
+    </div>
+</body>
+</html>
