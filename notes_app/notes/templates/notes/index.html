@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Додаток для нотаток</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'notes/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Мої нотатки</h1>
+        <div class="notes-grid">
+            {% for note in notes %}
+                <div class="note-card">
+                    <h2>{{ note.title }}</h2>
+                    <p>{{ note.content }}</p>
+                    <small>Створено: {{ note.created_at }}</small>
+                </div>
+            {% empty %}
+                <p>Немає доступних нотаток.</p>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
